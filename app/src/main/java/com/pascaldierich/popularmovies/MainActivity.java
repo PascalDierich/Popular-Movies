@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -17,7 +18,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,18 +26,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         GridView movieGrid = (GridView) (findViewById(R.id.movie_grid)); // initialize GridView
-        Spinner spinner = (Spinner) (findViewById(R.id.spinner)); // initialze Spinner
+
+        DownloadData downloadData = new DownloadData();
+
+        downloadData.delegate = this;
+        downloadData.execute();
 
 
-        String Json;
-        while((Json = String.valueOf(new DownloadData().execute())) == null){
-            Log.v("Movies while: ", "" + Json);
-            spinner.setEnabled(true);
-            spinner.setClickable(false);
-        }
-        spinner.setEnabled(false);
-
-
+/*
         movieGrid.setAdapter(new ImageAdapter(this));
 
         movieGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -46,6 +43,15 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+*/
+    }
+
+    @Override
+    public void processFinish(String Json) {
+        Log.v("MainAcitivty", "processFinish");
+        ProgressBar progressBar = (ProgressBar) (findViewById(R.id.progressBar));
+        progressBar.setVisibility(View.INVISIBLE); // download is finished
+        // TODO: start ImageAdapter
 
     }
 }
@@ -55,11 +61,9 @@ class DownloadData extends AsyncTask<Void, Void, String>{
     // TODO: move Strings into strings.xml
     private final String URL_STRING = "https://api.themoviedb.org/3/movie/550?api_key=";
     private final String API_KEY = "5c359398433009bb5d168d4cfb3e5cf3";
+    public AsyncResponse delegate;
 
     private String Json;
-
-    public DownloadData(){
-    }
 
     @Override
     protected String doInBackground(Void... voids) {
@@ -69,7 +73,7 @@ class DownloadData extends AsyncTask<Void, Void, String>{
 
         try {
 
-            URL url = new URL(URL_STRING);
+            URL url = new URL(URL_STRING + API_KEY);
 
             httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("GET");
@@ -99,7 +103,7 @@ class DownloadData extends AsyncTask<Void, Void, String>{
 
 
         } catch (Exception e){ // TODO: Exception sauber abfangen
-
+            Log.i("Exception", "Exception in AsyncTask" + e.fillInStackTrace());
         } finally {
             if(httpConnection != null){
                 httpConnection.disconnect();
@@ -108,6 +112,7 @@ class DownloadData extends AsyncTask<Void, Void, String>{
                 try {
                     reader.close();
                 } catch (IOException e) {
+                    Log.v("Exception: ", "Exception in finally");
                     e.printStackTrace();
                 }
             }
@@ -116,4 +121,10 @@ class DownloadData extends AsyncTask<Void, Void, String>{
 
         return Json;
     }
+
+    @Override
+    protected void onPostExecute(String json){
+        delegate.processFinish(json);
+    }
+
 }
