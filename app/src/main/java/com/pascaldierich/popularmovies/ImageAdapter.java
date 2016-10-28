@@ -14,8 +14,10 @@ import android.widget.ImageView;
 public class ImageAdapter extends BaseAdapter {
 
     private Context context;
+    private String Json;
 
-    public ImageAdapter(Context c){
+    public ImageAdapter(Context c, String Jsn){
+        Json = Jsn;
         context = c;
     }
 

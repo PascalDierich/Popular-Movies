@@ -61,6 +61,7 @@ class DownloadData extends AsyncTask<Void, Void, String>{
     // TODO: move Strings into strings.xml
     private final String URL_STRING = "https://api.themoviedb.org/3/movie/550?api_key=";
     private final String API_KEY = "5c359398433009bb5d168d4cfb3e5cf3";
+    private final String SORT_BY = "&sort_by=popularity.desc";
     public AsyncResponse delegate;
 
     private String Json;
@@ -73,7 +74,7 @@ class DownloadData extends AsyncTask<Void, Void, String>{
 
         try {
 
-            URL url = new URL(URL_STRING + API_KEY);
+            URL url = new URL(URL_STRING + API_KEY + SORT_BY);
 
             httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("GET");
