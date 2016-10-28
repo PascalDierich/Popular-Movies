@@ -5,16 +5,15 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pascaldierich.popularmovies.MainActivity">
+    tools:context="com.pascaldierich.popularmovies.MainActivity"
+    >
 
-    <GridLayout
+    <GridView
         android:layout_width="0dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/posterGrid">
-
-    </GridLayout>
+        android:layout_height="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/movie_grid" />
 </android.support.constraint.ConstraintLayout>
