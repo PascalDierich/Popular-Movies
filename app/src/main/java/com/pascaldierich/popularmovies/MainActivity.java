@@ -53,6 +53,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         progressBar.setVisibility(View.INVISIBLE); // download is finished
         // TODO: start ImageAdapter
 
+        Log.i("JSON starts", "");
+        JsonFormatter jsonFormatter = new JsonFormatter();
+        try {
+            jsonFormatter.getImageURLS(Json);
+        } catch (Exception e){
+            Log.i("Exception: ", e.fillInStackTrace() + "");
+        }
+
     }
 }
 
