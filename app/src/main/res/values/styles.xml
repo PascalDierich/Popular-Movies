@@ -1,7 +1,15 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Base.AppTheme">
+        <!-- Customize your theme here. -->
+        
+        <item name="colorAccent">@android:color/holo_orange_dark</item>
+        <item name="colorPrimary">@android:color/holo_blue_light</item>
+        <item name="colorPrimaryDark">@android:color/holo_blue_dark</item>
+    </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Base.AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
