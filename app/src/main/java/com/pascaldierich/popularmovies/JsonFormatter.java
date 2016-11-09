@@ -14,6 +14,8 @@ public class JsonFormatter {
     public String[] getImageURLS(String jsonString) throws Exception { // TODO: Exceptions
         JSONObject jsonObject = new JSONObject(jsonString);
 
+        final String URl = "https://image.tmdb.org/t/p/w500"; // + poster/path.jpg
+
 
 
         return null;

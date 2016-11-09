@@ -63,6 +63,7 @@ class DownloadData extends AsyncTask<Void, Void, String>{
     private final String API_KEY = "5c359398433009bb5d168d4cfb3e5cf3";
     private final String SORT_BY = "&sort_by=popularity.desc";
     private final String LANGUAGE_EN = "&language=en-US";
+    private final String PAGE = "&page=";
 
     public AsyncResponse delegate;
 
@@ -76,7 +77,7 @@ class DownloadData extends AsyncTask<Void, Void, String>{
 
         try {
 
-            URL url = new URL(URL_STRING + API_KEY + SORT_BY);
+            URL url = new URL(URL_STRING + API_KEY + SORT_BY + LANGUAGE_EN + PAGE +1);
 
             httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("GET");
