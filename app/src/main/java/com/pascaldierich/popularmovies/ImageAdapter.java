@@ -1,69 +1,64 @@
 package com.pascaldierich.popularmovies;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 /**
  * Created by pascaldierich on 28.10.16.
  */
 
-public class ImageAdapter extends BaseAdapter {
+public class ImageAdapter extends ArrayAdapter<GridItem> {
+    private static final String TAG = ImageAdapter.class.getSimpleName();
 
     private Context context;
-    private String Json;
+    private int layoutResourceId;
+    private ArrayList<GridItem> gridData = new ArrayList<GridItem>();
 
-    public ImageAdapter(Context c, String Jsn){
-        Json = Jsn;
-        context = c;
+    public ImageAdapter(Context c, int layoutResourceId, ArrayList<GridItem> gridData){
+        super(c, layoutResourceId, gridData);
+        this.context = c;
+        this.layoutResourceId = layoutResourceId;
+        this.gridData = gridData;
     }
 
-    @Override
-    public int getCount() {
-        return mThumbIds.length;
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
+    public void setGridData(ArrayList<GridItem> gridData){
+        this.gridData = gridData;
+        notifyDataSetChanged(); // TODO: what?
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+        ViewHolder holder;
+
         if (convertView == null) {
-            // if it's not recycled, initialize some attributes
-            imageView = new ImageView(context);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            convertView = inflater.inflate(layoutResourceId, parent, false);
+            holder = new ViewHolder();
+            holder.imageView = (ImageView) convertView.findViewById(R.id.image);
+            convertView.setTag(holder);
         } else {
-            imageView = (ImageView) convertView;
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        imageView.setImageResource(mThumbIds[position]);
-        return imageView;
+        GridItem imgURL = gridData.get(position);
+        Picasso.with(context).load(imgURL.getImage()).into(holder.imageView);
+
+        return convertView;
     }
 
-    private Integer[] mThumbIds = {
-            R.drawable.sample_2, R.drawable.sample_3,
-            R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7,
-            R.drawable.sample_0, R.drawable.sample_1,
-            R.drawable.sample_2, R.drawable.sample_3,
-            R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7,
-            R.drawable.sample_0, R.drawable.sample_1,
-            R.drawable.sample_2, R.drawable.sample_3,
-            R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7
-    };
+    static class ViewHolder{
+        ImageView imageView;
+    }
 }

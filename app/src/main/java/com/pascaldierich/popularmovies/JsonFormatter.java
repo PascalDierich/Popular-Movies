@@ -16,16 +16,16 @@ public class JsonFormatter {
 
     public String[] getImageURLS(String jsonString) throws Exception { // TODO: Exceptions
         JSONObject jsonObject = new JSONObject(jsonString);
-
-        final String URl = "https://image.tmdb.org/t/p/w500"; // + poster/path.jpg
-
         JSONArray jsonArray = jsonObject.getJSONArray("results");
 
-        JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-        String a = jsonObject1.get("poster_path").toString();
+        String[] imageURLs = new String[jsonArray.length()];
+        final String URL = "https://image.tmdb.org/t/p/w500"; // TODO: declare in string.xml
 
-        Log.i("JSONArray.getString = ", a);
-        return null;
+        for(int i = 0; i < jsonArray.length(); i++){
+            jsonObject = jsonArray.getJSONObject(i);
+            imageURLs[i] = URL + jsonObject.get("poster_path").toString();
+        }
+
+        return imageURLs;
     }
-
 }

@@ -1,15 +1,22 @@
 package com.pascaldierich.popularmovies;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,54 +24,64 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    /*
+     * TODO: ConnectionCheck in onCreate()
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GridView movieGrid = (GridView) (findViewById(R.id.movie_grid)); // initialize GridView
 
         DownloadData downloadData = new DownloadData();
 
         downloadData.delegate = this;
         downloadData.execute();
-
-
-/*
-        movieGrid.setAdapter(new ImageAdapter(this));
-
-        movieGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(MainActivity.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-*/
     }
 
     @Override
     public void processFinish(String Json) {
-        Log.v("MainAcitivty", "processFinish");
         ProgressBar progressBar = (ProgressBar) (findViewById(R.id.progressBar));
-        progressBar.setVisibility(View.INVISIBLE); // download is finished
-        // TODO: start ImageAdapter
-
-        Log.i("JSON starts", "");
-        JsonFormatter jsonFormatter = new JsonFormatter();
+        progressBar.setVisibility(View.GONE);
         try {
-            jsonFormatter.getImageURLS(Json);
+            ArrayList<GridItem> urlData = parseJsonForImageURLs(Json);
+            ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.grid_view_layout, urlData);
+            GridView gridView = (GridView) (findViewById(R.id.movie_grid));
+            gridView.setAdapter(imageAdapter);
         } catch (Exception e){
-            Log.i("Exception: ", e.fillInStackTrace() + "");
+            Log.i(TAG, e.fillInStackTrace() + "");
+            // TODO: Exceptions...
         }
+    }
 
+    private ArrayList<GridItem> parseJsonForImageURLs(String json) throws Exception {
+        ArrayList<GridItem> urlData = new ArrayList<>();
+        GridItem item;
+
+        JSONObject jsonObject = new JSONObject(json);
+        JSONArray jsonArray = jsonObject.getJSONArray("results");
+
+        final String URL = "https://image.tmdb.org/t/p/w500"; // TODO: declare in string.xml
+
+        JSONObject jsonObject1;
+        for(int i = 0; i < jsonArray.length(); i++){
+            item = new GridItem();
+            jsonObject1 = jsonArray.getJSONObject(i);
+            item.setImage(URL + jsonObject1.get("poster_path").toString());
+            urlData.add(item);
+        }
+        return urlData;
     }
 }
 
 class DownloadData extends AsyncTask<Void, Void, String>{
+    private static final String TAG = DownloadData.class.getSimpleName();
 
     // TODO: move Strings into strings.xml
     private final String URL_STRING = "https://api.themoviedb.org/3/discover/movie?api_key=";
@@ -115,7 +132,7 @@ class DownloadData extends AsyncTask<Void, Void, String>{
 
 
         } catch (Exception e){ // TODO: Exception sauber abfangen
-            Log.i("Exception", "Exception in AsyncTask" + e.fillInStackTrace());
+            Log.i(TAG, "doInBackground: " + e.getLocalizedMessage());
         } finally {
             if(httpConnection != null){
                 httpConnection.disconnect();
