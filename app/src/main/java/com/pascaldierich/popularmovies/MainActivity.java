@@ -1,6 +1,7 @@
 package com.pascaldierich.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(String Json) {
+    public void processFinish(final String Json) {
         ProgressBar progressBar = (ProgressBar) (findViewById(R.id.progressBar));
         progressBar.setVisibility(View.GONE);
         try {
@@ -54,10 +55,31 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.grid_view_layout, urlData);
             GridView gridView = (GridView) (findViewById(R.id.movie_grid));
             gridView.setAdapter(imageAdapter);
+
+            /*
+            ClickListener
+             */
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id){
+                    GridItem item = (GridItem) parent.getItemAtPosition(position);
+
+                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    ImageView imageView = (ImageView) v.findViewById(R.id.image);
+
+                    try {
+                        intent.putExtra("detailInfo", parseJsonForDetailInfo(Json, position));
+                    } catch (Exception e){
+                        Log.i(TAG, "processFinish -> onClickListener: " + e.fillInStackTrace());
+                    }
+                }
+            });
+
+
         } catch (Exception e){
             Log.i(TAG, e.fillInStackTrace() + "");
             // TODO: Exceptions...
         }
+
     }
 
     private ArrayList<GridItem> parseJsonForImageURLs(String json) throws Exception {
@@ -77,6 +99,25 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             urlData.add(item);
         }
         return urlData;
+    }
+
+    private String[] parseJsonForDetailInfo(String json, int position) throws Exception {
+        final String URL = "https://image.tmdb.org/t/p/w500"; // TODO: declare in string.xml
+
+        JSONObject jsonObject = new JSONObject(json);
+        JSONArray jsonArray = jsonObject.getJSONArray("results");
+
+        jsonObject = jsonArray.getJSONObject(position); // TODO: vielleicht position +1 (?)
+
+
+        Log.i(TAG, jsonObject.getString("original_title"));
+        return new String[] {
+                jsonObject.getString("original_title"),
+                URL + jsonObject.getString("poster_path"),
+                jsonObject.getString("overview"),
+                jsonObject.getString("vote_average").toString(),
+                jsonObject.getString("release_date")
+        };
     }
 }
 
