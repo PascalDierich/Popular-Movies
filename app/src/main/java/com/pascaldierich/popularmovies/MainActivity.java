@@ -197,3 +197,14 @@ class DownloadData extends AsyncTask<Void, Void, String>{
     }
 
 }
+
+class SearchForMovie extends AsyncTask<String, Void, Void>{
+
+    @Override
+    protected Void doInBackground(String... url) {
+        // TODO: search for one specific movie and return json
+        // gets called by FloatingActionButton
+
+        return null;
+    }
+}
