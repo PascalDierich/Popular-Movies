@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
                     try {
                         intent.putExtra("detailInfo", parseJsonForDetailInfo(Json, position));
+                        startActivity(intent); // New Activity starts...
                     } catch (Exception e){
                         Log.i(TAG, "processFinish -> onClickListener: " + e.fillInStackTrace());
                     }
@@ -109,8 +110,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
         jsonObject = jsonArray.getJSONObject(position); // TODO: vielleicht position +1 (?)
 
-
-        Log.i(TAG, jsonObject.getString("original_title"));
         return new String[] {
                 jsonObject.getString("original_title"),
                 URL + jsonObject.getString("poster_path"),
