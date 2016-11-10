@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 jsonObject.getString("original_title"),
                 URL + jsonObject.getString("poster_path"),
                 jsonObject.getString("overview"),
-                jsonObject.getString("vote_average").toString(),
+                jsonObject.getString("vote_average"),
                 jsonObject.getString("release_date")
         };
     }

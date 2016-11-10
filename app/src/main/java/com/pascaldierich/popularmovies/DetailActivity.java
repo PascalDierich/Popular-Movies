@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.Rating;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -16,25 +17,24 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_detail_beta);
 
         Intent detailIntent = this.getIntent();
 
-        TextView titleView = (TextView) findViewById(R.id.textView_title);
-        TextView plotView = (TextView) findViewById(R.id.textView_plot);
-        TextView relaseView = (TextView) findViewById(R.id.textView_realeseDate);
+        TextView titleView = (TextView) findViewById(R.id.textViewTitle);
+        TextView plotView = (TextView) findViewById(R.id.textViewPlot);
+        TextView releaseView = (TextView) findViewById(R.id.textViewReleaseDate);
 
-        ImageView thumbnail = (ImageView) findViewById(R.id.imageView_thumbnail);
+        ImageView thumbnail = (ImageView) findViewById(R.id.thumbnail);
 
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar_userRating);
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
         // Show Details
         String[] detailInfo = detailIntent.getStringArrayExtra("detailInfo");
         titleView.setText(detailInfo[0]);
-        // TODO: Poster_path muss noch geladen werden
         Picasso.with(this).load(detailInfo[1]).into(thumbnail);
         plotView.setText(detailInfo[2]);
-        relaseView.setText("relased: " + detailInfo[4]);
+        releaseView.setText(detailInfo[4]);
         ratingBar.setRating(Float.parseFloat(detailInfo[3]));
 
     }
