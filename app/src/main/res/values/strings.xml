@@ -1,21 +1,41 @@
 <resources>
     <string name="app_name">Popular Movies</string>
-    <string name="title_activity_main2">Main2Activity</string>
 
-    <!-- download strings -->
-    <string name="url_string">https://api.themoviedb.org/3/discover/movie?api_key=</string>
+    <!-- Connection -->
+    <string name="download">https://api.themoviedb.org/3/discover/movie?api_key=</string>
+    <string name="search">https://api.themoviedb.org/3/search/movie?api_key=</string>
+
     <string name="api_key">5c359398433009bb5d168d4cfb3e5cf3</string>
+
+    <string name="search_for">&amp;query=</string>
+    <string name="movieName">movieName</string>
 
     <string name="sort_by_pop">&amp;sort_by=popularity.desc</string>
     <string name="sort_by_rat">&amp;sort_by=vote_average.desc</string>
 
+    <string name="detailInfo">detailInfo</string>
+
     <string name="language_en">&amp;language=en-US</string>
     <string name="page">&amp;page=</string>
+
     <string name="poster_path">https://image.tmdb.org/t/p/w500</string>
 
-    <!-- MainActivity sort by -->
+    <!-- MainActivity sort by ... -->
     <string name="sort_by_pop_toast">sort by Popularity</string>
     <string name="sort_by_rat_toast">sort by ratings</string>
 
-    <string name="sort_by_boolean">sort_by</string>
+    <!-- Intent Extra String Tag-->
+    <string name="info_download">sort_by</string>
+
+    <!-- Layout -->
+    <string name="textView_released">released:</string>
+
+    <string name="contentDescription_image">Thumbnail of Movie</string>
+    <string name="contentDescription_rating">sort_by_rating</string>
+    <string name="contentDescription_popularity">sort_by_popularity</string>
+
+    <string name="editText_search">Search for e.g. Trainspotting</string>
+    <string name="editText_error">No Results found...</string>
+    <string name="editText_connection_error">no Internetconnection...</string>
+
 </resources>

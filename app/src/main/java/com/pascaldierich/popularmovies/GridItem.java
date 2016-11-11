@@ -1,9 +1,5 @@
 package com.pascaldierich.popularmovies;
 
-/**
- * Created by pascaldierich on 09.11.16.
- */
-
 public class GridItem {
     private String image;
 

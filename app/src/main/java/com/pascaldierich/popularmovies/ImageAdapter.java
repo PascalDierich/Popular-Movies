@@ -7,17 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-/**
- * Created by pascaldierich on 28.10.16.
- */
 
 public class ImageAdapter extends ArrayAdapter<GridItem> {
     private static final String TAG = ImageAdapter.class.getSimpleName();
@@ -33,15 +27,9 @@ public class ImageAdapter extends ArrayAdapter<GridItem> {
         this.gridData = gridData;
     }
 
-    public void setGridData(ArrayList<GridItem> gridData){
-        this.gridData = gridData;
-        notifyDataSetChanged();
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        Log.i(TAG, "getView called: " + position);
         if (convertView == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);

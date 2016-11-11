@@ -24,10 +24,10 @@
         android:visibility="visible"
         android:backgroundTint="@android:color/holo_orange_dark"
         tools:targetApi="lollipop"
-        app:layout_constraintTop_toTopOf="@+id/movie_grid"
-        app:layout_constraintLeft_toLeftOf="@+id/movie_grid"
-        app:layout_constraintRight_toRightOf="@+id/movie_grid"
-        app:layout_constraintBottom_toBottomOf="@+id/movie_grid"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <android.support.v7.widget.Toolbar
         android:layout_width="0dp"
@@ -60,7 +60,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:srcCompat="@drawable/ic_visibility_black"
                 android:background="@android:color/holo_orange_dark"
-                android:contentDescription="" />
+                android:contentDescription="@string/contentDescription_popularity" />
 
             <ImageButton
                 android:layout_width="50dp"
@@ -69,9 +69,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/toolbar_button_sort_popularity"
+                app:layout_constraintRight_toLeftOf="@+id/toolbar_button_sort_popularity"
                 app:srcCompat="@drawable/ic_star_border_black"
-                android:background="@android:color/holo_orange_dark" />
+                android:background="@android:color/holo_orange_dark"
+                android:contentDescription="@string/contentDescription_rating" />
 
 
         </android.support.constraint.ConstraintLayout>
@@ -96,4 +97,28 @@
         app:layout_constraintTop_toTopOf="@+id/movie_grid"
         android:layout_marginBottom="25dp"
         app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_search"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        tools:layout_editor_absoluteX="89dp"
+        android:id="@+id/editText_search"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        android:hint="@string/editText_search"/>
 </android.support.constraint.ConstraintLayout>

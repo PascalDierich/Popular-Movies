@@ -1,10 +1,8 @@
 package com.pascaldierich.popularmovies;
 
 import android.content.Intent;
-import android.media.Rating;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -17,12 +15,13 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_beta);
+        setContentView(R.layout.activity_detail);
 
         Intent detailIntent = this.getIntent();
 
         // Show Details
         String[] detailInfo = detailIntent.getStringArrayExtra("detailInfo");
+        setTitle(detailInfo[0]);
         Picasso.with(this).load(detailInfo[1]).into((ImageView) findViewById(R.id.thumbnail));
 
         TextView titleView = (TextView) findViewById(R.id.textViewTitle);

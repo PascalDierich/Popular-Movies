@@ -3,6 +3,7 @@
     package="com.pascaldierich.popularmovies">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -17,12 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DetailActivity" />
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".DetailActivity"  />
     </application>
 
 </manifest>
