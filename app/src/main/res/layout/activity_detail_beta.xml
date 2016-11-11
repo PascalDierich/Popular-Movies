@@ -9,11 +9,12 @@
 
 
     <ImageView
-        android:layout_width="360dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@android:color/darker_gray"
         android:id="@+id/thumbnail"
-        app:layout_constraintRight_toRightOf="@+id/ratingBar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <RatingBar
@@ -23,9 +24,11 @@
         app:layout_constraintBottom_toBottomOf="@+id/thumbnail"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/thumbnail"
-        android:numStars="5"
+        android:numStars="10"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp" />
+        android:layout_marginRight="8dp"
+        android:clickable="false"
+        android:isIndicator="true" />
 
     <TextView
         android:text="TextView"
@@ -38,7 +41,7 @@
 
     <TextView
         android:text="Der seltsame Fall des Benjamin Buttons"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/textViewTitle"
         android:layout_marginStart="16dp"
@@ -51,7 +54,7 @@
 
     <TextView
         android:text="Hallo, dies ist die Geschichte wie sich 2 Menschen"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/textViewPlot"
         android:layout_marginStart="16dp"
@@ -61,7 +64,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginRight="16dp" />
+        android:layout_marginRight="16dp"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
         android:text="released:"

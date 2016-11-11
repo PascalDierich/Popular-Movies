@@ -2,18 +2,15 @@ package com.pascaldierich.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -38,12 +35,20 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DownloadData downloadData;
+
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra(getString(R.string.sort_by_boolean), true) == true ){
+            downloadData = new DownloadData(getApplicationContext(), true);
+        } else {
+            downloadData = new DownloadData(getApplicationContext(), false);
+        }
 
 
-        DownloadData downloadData = new DownloadData();
 
         downloadData.delegate = this;
         downloadData.execute();
+
     }
 
     @Override
@@ -61,10 +66,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
              */
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id){
-                    GridItem item = (GridItem) parent.getItemAtPosition(position);
-
                     Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                    ImageView imageView = (ImageView) v.findViewById(R.id.image);
 
                     try {
                         intent.putExtra("detailInfo", parseJsonForDetailInfo(Json, position));
@@ -75,9 +77,36 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 }
             });
 
+            ImageButton popularityButton = (ImageButton) findViewById(R.id.toolbar_button_sort_popularity);
+            ImageButton ratingButton = (ImageButton) findViewById(R.id.toolbar_button_sort_rating);
+
+
+
+            popularityButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.sort_by_pop_toast), Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    startActivity(new Intent(MainActivity.this, MainActivity.class)
+                            .putExtra(getString(R.string.sort_by_boolean), true));
+                }
+            });
+
+            ratingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.sort_by_rat_toast), Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    startActivity(new Intent(MainActivity.this, MainActivity.class)
+                            .putExtra(getString(R.string.sort_by_boolean), false));
+                }
+            });
+
 
         } catch (Exception e){
-            Log.i(TAG, e.fillInStackTrace() + "");
+            Log.e(TAG, "Exception in processFinish() = " + e.fillInStackTrace());
             // TODO: Exceptions...
         }
 
@@ -90,49 +119,53 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         JSONObject jsonObject = new JSONObject(json);
         JSONArray jsonArray = jsonObject.getJSONArray("results");
 
-        final String URL = "https://image.tmdb.org/t/p/w500"; // TODO: declare in string.xml
-
         JSONObject jsonObject1;
         for(int i = 0; i < jsonArray.length(); i++){
             item = new GridItem();
             jsonObject1 = jsonArray.getJSONObject(i);
-            item.setImage(URL + jsonObject1.get("poster_path").toString());
+            item.setImage(getString(R.string.poster_path) + jsonObject1.get("poster_path").toString());
             urlData.add(item);
         }
         return urlData;
     }
 
     private String[] parseJsonForDetailInfo(String json, int position) throws Exception {
-        final String URL = "https://image.tmdb.org/t/p/w500"; // TODO: declare in string.xml
-
         JSONObject jsonObject = new JSONObject(json);
         JSONArray jsonArray = jsonObject.getJSONArray("results");
 
-        jsonObject = jsonArray.getJSONObject(position); // TODO: vielleicht position +1 (?)
+        jsonObject = jsonArray.getJSONObject(position);
 
         return new String[] {
                 jsonObject.getString("original_title"),
-                URL + jsonObject.getString("poster_path"),
+                getString(R.string.poster_path) + jsonObject.getString("poster_path"),
                 jsonObject.getString("overview"),
                 jsonObject.getString("vote_average"),
                 jsonObject.getString("release_date")
         };
+    }
+
+    private String[] parseJsonForDetailInfoSpecificMovie(String json) throws Exception {
+        // TODO
+
+
+        return null;
     }
 }
 
 class DownloadData extends AsyncTask<Void, Void, String>{
     private static final String TAG = DownloadData.class.getSimpleName();
 
-    // TODO: move Strings into strings.xml
-    private final String URL_STRING = "https://api.themoviedb.org/3/discover/movie?api_key=";
-    private final String API_KEY = "5c359398433009bb5d168d4cfb3e5cf3";
-    private final String SORT_BY = "&sort_by=popularity.desc";
-    private final String LANGUAGE_EN = "&language=en-US";
-    private final String PAGE = "&page=";
-
     public AsyncResponse delegate;
+    private Context context;
+    private boolean pop_rat;
 
     private String Json;
+
+    public DownloadData(Context c, boolean pop_rat){
+        super();
+        this.context = c;
+        this.pop_rat = pop_rat;
+    }
 
     @Override
     protected String doInBackground(Void... voids) {
@@ -140,9 +173,24 @@ class DownloadData extends AsyncTask<Void, Void, String>{
         HttpURLConnection httpConnection = null;
         BufferedReader reader = null;
 
+        Json = null;
         try {
+            URL url = new URL(context.getString(R.string.url_string)
+                    + context.getString(R.string.api_key)
+                    + context.getString(R.string.sort_by_pop)
+                    + context.getString(R.string.language_en)
+                    + context.getString(R.string.page)
+                    + 1);
 
-            URL url = new URL(URL_STRING + API_KEY + SORT_BY + LANGUAGE_EN + PAGE +1);
+            if(pop_rat == false){
+                Log.e(TAG, "pop_rat == false");
+                url = new URL("" + context.getString(R.string.url_string)
+                        + context.getString(R.string.api_key)
+                        + context.getString(R.string.sort_by_rat)
+                        + context.getString(R.string.language_en)
+                        + context.getString(R.string.page)
+                        + 1);
+            }
 
             httpConnection = (HttpURLConnection) url.openConnection();
             httpConnection.setRequestMethod("GET");
@@ -172,7 +220,7 @@ class DownloadData extends AsyncTask<Void, Void, String>{
 
 
         } catch (Exception e){ // TODO: Exception sauber abfangen
-            Log.i(TAG, "doInBackground: " + e.getLocalizedMessage());
+            Log.i(TAG, "doInBackground: " + e.fillInStackTrace());
         } finally {
             if(httpConnection != null){
                 httpConnection.disconnect();
@@ -187,7 +235,6 @@ class DownloadData extends AsyncTask<Void, Void, String>{
             }
 
         }
-
         return Json;
     }
 

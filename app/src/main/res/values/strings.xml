@@ -1,4 +1,21 @@
 <resources>
-    <string name="app_name">PopularMovies</string>
+    <string name="app_name">Popular Movies</string>
     <string name="title_activity_main2">Main2Activity</string>
+
+    <!-- download strings -->
+    <string name="url_string">https://api.themoviedb.org/3/discover/movie?api_key=</string>
+    <string name="api_key">5c359398433009bb5d168d4cfb3e5cf3</string>
+
+    <string name="sort_by_pop">&amp;sort_by=popularity.desc</string>
+    <string name="sort_by_rat">&amp;sort_by=vote_average.desc</string>
+
+    <string name="language_en">&amp;language=en-US</string>
+    <string name="page">&amp;page=</string>
+    <string name="poster_path">https://image.tmdb.org/t/p/w500</string>
+
+    <!-- MainActivity sort by -->
+    <string name="sort_by_pop_toast">sort by Popularity</string>
+    <string name="sort_by_rat_toast">sort by ratings</string>
+
+    <string name="sort_by_boolean">sort_by</string>
 </resources>

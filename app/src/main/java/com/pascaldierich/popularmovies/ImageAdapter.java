@@ -35,13 +35,13 @@ public class ImageAdapter extends ArrayAdapter<GridItem> {
 
     public void setGridData(ArrayList<GridItem> gridData){
         this.gridData = gridData;
-        notifyDataSetChanged(); // TODO: what?
+        notifyDataSetChanged();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-
+        Log.i(TAG, "getView called: " + position);
         if (convertView == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);

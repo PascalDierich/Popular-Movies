@@ -21,18 +21,16 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent detailIntent = this.getIntent();
 
+        // Show Details
+        String[] detailInfo = detailIntent.getStringArrayExtra("detailInfo");
+        Picasso.with(this).load(detailInfo[1]).into((ImageView) findViewById(R.id.thumbnail));
+
         TextView titleView = (TextView) findViewById(R.id.textViewTitle);
         TextView plotView = (TextView) findViewById(R.id.textViewPlot);
         TextView releaseView = (TextView) findViewById(R.id.textViewReleaseDate);
-
-        ImageView thumbnail = (ImageView) findViewById(R.id.thumbnail);
-
         RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
-        // Show Details
-        String[] detailInfo = detailIntent.getStringArrayExtra("detailInfo");
         titleView.setText(detailInfo[0]);
-        Picasso.with(this).load(detailInfo[1]).into(thumbnail);
         plotView.setText(detailInfo[2]);
         releaseView.setText(detailInfo[4]);
         ratingBar.setRating(Float.parseFloat(detailInfo[3]));
