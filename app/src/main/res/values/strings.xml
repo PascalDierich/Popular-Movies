@@ -2,7 +2,8 @@
     <string name="app_name">Popular Movies</string>
 
     <!-- Connection -->
-    <string name="download">https://api.themoviedb.org/3/discover/movie?api_key=</string>
+    <string name="download_popular">https://api.themoviedb.org/3/movie/popular?api_key=</string>
+    <string name="download_rating">https://api.themoviedb.org/3/movie/top_rated?api_key=</string>
     <string name="search">https://api.themoviedb.org/3/search/movie?api_key=</string>
 
     <string name="api_key">5c359398433009bb5d168d4cfb3e5cf3</string>

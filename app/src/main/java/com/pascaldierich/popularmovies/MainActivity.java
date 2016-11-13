@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         setContentView(R.layout.activity_main);
 
         if(checkConnection() == false){
-            final EditText error = (EditText) findViewById(R.id.editText_search);
+            final TextView error = (TextView) findViewById(R.id.textView_search);
             error.setText(getString(R.string.editText_connection_error));
             error.setVisibility(View.VISIBLE);
 
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                         )
                 );
             } catch (Exception e){
-                final EditText error = (EditText) findViewById(R.id.editText_search);
+                final TextView error = (TextView) findViewById(R.id.textView_search);
                 error.setText(getString(R.string.editText_error));
                 error.setVisibility(View.VISIBLE);
 
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
                     startActivity(new Intent(MainActivity.this, MainActivity.class)
                             .putExtra(getString(R.string.info_download), 0)); // 0 --> download by popularity
+                    finish(); // TODO: finish "old" Activity,
                 }
             });
 
@@ -139,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
                     startActivity(new Intent(MainActivity.this, MainActivity.class)
                             .putExtra(getString(R.string.info_download), 1)); // 1 --> download by rating
+                    finish(); // TODO: for keeping the navigation clean
                 }
             });
 
@@ -166,13 +169,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                                     .putExtra(getString(R.string.info_download), 2)
                                     .putExtra(getString(R.string.movieName), movie)
                             );
+                            finish(); // TODO:
                         }
                     });
                 }
             });
         } catch (Exception e1){
             Log.v(TAG, "Exception in processFinish() -> " + e1.fillInStackTrace());
-            final EditText error = (EditText) findViewById(R.id.editText_search);
+            final TextView error = (TextView) findViewById(R.id.textView_search);
             error.setText(getString(R.string.editText_error));
             error.setVisibility(View.VISIBLE);
 
@@ -239,17 +243,15 @@ class DownloadData extends AsyncTask<String, Void, String>{
 
         Json = null;
         try {
-            URL url = new URL(context.getString(R.string.download)
+            URL url = new URL(context.getString(R.string.download_popular)
                     + context.getString(R.string.api_key)
-                    + context.getString(R.string.sort_by_pop)
                     + context.getString(R.string.language_en)
                     + context.getString(R.string.page)
                     + 1);
 
             if (pop_rat == 1){
-                url = new URL("" + context.getString(R.string.download)
+                url = new URL(context.getString(R.string.download_rating)
                         + context.getString(R.string.api_key)
-                        + context.getString(R.string.sort_by_rat)
                         + context.getString(R.string.language_en)
                         + context.getString(R.string.page)
                         + 1);
